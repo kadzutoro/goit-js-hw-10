@@ -4,28 +4,35 @@ import 'izitoast/dist/css/iziToast.min.css';
 iziToast.settings({
     transitionIn: 'flipInX',
     transitionOut: 'flipOutX',
-    position: 'topLeft',
-    messageColor: 'blue',
+    position: 'topRight',
+    messageColor: 'white',
     progressBar: false,
     close: false,
 })
 
-const form = document.querySelectorAll(".form")
+const form = document.querySelector(".form")
 
 form.addEventListener('submit', a => {
     a.preventDefault();
-    const delay = form.elements.dealy.value;
+    const delay = form.elements.delay.value;
     const state = form.elements.state.value;
-
+  
     createMessage(delay, state)
-    .then (message => {
+      .then(message => {
         iziToast.show({
-            message,
-            backgroundColor: '#FF9494',
+          message,
+          backgroundColor: '#4BB543',
         });
-    });
+      })
+      .catch(message => {
+        iziToast.show({
+          message,
+          backgroundColor: '#FF9494',
+        });
+      });
+  
     form.reset();
-});
+  });
 
 function createMessage (delay, state) {
     return new Promise((resolve, reject) => {
