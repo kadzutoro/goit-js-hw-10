@@ -1,0 +1,2 @@
+import"./assets/modulepreload-polyfill-ec808ebb.js";import{i as e,f as o}from"./assets/vendor-651d7991.js";e.settings({timeout:3e3,transitionIn:"flipInX",transitionOut:"flipOutX",position:"topRight",message:"Please choose a date in the future",messageColor:"white",backgroundColor:"red",progressBar:!1});const i=document.querySelector(".data-start"),r=document.querySelector("#datetime-picker");i.disabled=!0;o(r,s);const s={enableTime:!0,time_24hr:!0,defaultDate:new Date,minuteIncrement:1,onClose(t){console.log(t[0])}};
+//# sourceMappingURL=commonHelpers.js.map
