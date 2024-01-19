@@ -4,6 +4,29 @@ import 'flatpickr/dist/flatpickr.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
+iziToast.settings({
+  timeout: 3000,
+  transitionIn: 'flipInX',
+  transitionOut: 'flipOutX',
+  position: 'topRight',
+  message: 'Please choose a date in the future',
+  messageColor: 'white',
+  backgroundColor: 'red',
+  progressBar: false,
+});
+
+const startBtn = document.querySelector('.data-start');
+const datePicker = document.querySelector('#datetime-picker');
+
+startBtn.disabled = true;
+
+flatpickr(datePicker, options);
+
+// flatpickr('#datetime-picker', {
+//     enableTime: true,
+//     dateFormat: "Y-m-d H:i",
+// })
+
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -31,3 +54,14 @@ const options = {
   
     return { days, hours, minutes, seconds };
   }
+
+  function timer(selectedDates) {
+    userSelectedDates = selectedDates[0].getTime();
+    if ( userSelectedDates <= Date.now() ) {
+      startBtn.disabled = true;
+      iziToast.show();
+    } else {
+      startBtn.disabled = false;
+      startBtn.addEventListener('click')
+    }
+  } 
