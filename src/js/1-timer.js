@@ -1,3 +1,4 @@
+
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -15,17 +16,7 @@ iziToast.settings({
   progressBar: false,
 });
 
-const startBtn = document.querySelector('.data-start');
-const datePicker = document.querySelector('#datetime-picker');
-
-startBtn.disabled = true;
-
-flatpickr(datePicker, options);
-
-// flatpickr('#datetime-picker', {
-//     enableTime: true,
-//     dateFormat: "Y-m-d H:i",
-// })
+let intervalId, userSelectedDate;
 
 const options = {
     enableTime: true,
@@ -33,9 +24,20 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-      console.log(selectedDates[0]);
+      timer(selectedDates)
     },
   };
+const startBtn = document.querySelector('button[data-start]');
+const datePicker = document.querySelector('#datetime-picker');
+
+const second = document.querySelector('span[data-seconds]'),
+minute = document.querySelector('span[data-minutes]'),
+hour = document.querySelector('span[data-hours]'),
+day = document.querySelector('span[data-days]') ;
+
+startBtn.disabled = true;
+
+flatpickr(datePicker, options);
 
   function convertMs(ms) {
     const second = 1000;
@@ -56,12 +58,37 @@ const options = {
   }
 
   function timer(selectedDates) {
-    userSelectedDates = selectedDates[0].getTime();
-    if ( userSelectedDates <= Date.now() ) {
+    userSelectedDate = selectedDates[0].getTime();
+    if ( userSelectedDate <= Date.now() ) {
       startBtn.disabled = true;
       iziToast.show();
     } else {
       startBtn.disabled = false;
-      startBtn.addEventListener('click')
+      startBtn.addEventListener('click',() => {
+        startBtn.disabled = true;
+        datePicker.disabled = true;
+    intervalId = setInterval(() => {
+        const countDown = userSelectedDate - Date.now()
+        if (countDown <= 0) {
+          clearInterval(intervalId);
+          datePicker.disabled = false;
+          startBtn.disabled = false;
+          return;
+        }
+        let { days, hours, minutes, seconds } = convertMs(countDown)
+        day.textContent = addZero(days)
+        hour.textContent = addZero(hours)
+        minute.textContent = addZero(minutes)
+        second.textContent = addZero(seconds)
+       }, 1000);
+      })
     }
-  } 
+  }
+
+  function addZero(unit) {
+    return unit.toString().padStart(2, '0');
+  }
+
+
+
+  
